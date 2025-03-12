@@ -57,9 +57,24 @@ class MNISTModel(NN.Module):   ### This creates a class for our specific NN, inh
         x = self.fc4(x)  # No activation here, end of the road ("cross-entropy expects raw logits" - which are produced here, the logits will be converted to probabilities later by the cross-entropy function during training and softmax during training and inference)
         return x
     
-loss_function = NN.CrossEntropyLoss()
+loss_function = NN.CrossEntropyLoss()  # using built-in loss function
 
 
-model = MNISTModel()
+model = MNISTModel() ##create the model as described abvoe
 
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.001) ### lr = learning rate, 0.001 is apparently a "normal" value. Adam is the optimizer chosen, also fairly default
+
+num_epochs = 30 ## passes through the dataset
+
+for epoch in range(num_epochs):
+    for images, lables in train_loader: #note uses batches defined earlier
+        optimizer.zero_grad() ### reset gradients each time
+
+        outputs = model(images) # forward pass
+        loss = loss_function(outputs, lables)
+
+        loss.backward() ## backprop method created by pytorch crossentropyloss function, very convenient
+        optimizer.step()
+
+        print(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss.item()}")
+
