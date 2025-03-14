@@ -64,6 +64,10 @@ model = MNISTModel() ##create the model as described abvoe
 
 optimizer = optim.Adam(model.parameters(), lr=0.001) ### lr = learning rate, 0.001 is apparently a "normal" value. Adam is the optimizer chosen, also fairly default
 
+
+
+##### do training
+
 num_epochs = 30 ## passes through the dataset
 
 for epoch in range(num_epochs):
@@ -77,4 +81,36 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         print(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss.item()}")
+
+
+
+### / training
+
+## disbable training with 
+# 
+# model.eval()
+# with torch.no_grad(): ...
+# set back to training mode with model.train()
+
+
+
+### evaluation:
+
+correct = 0
+total = 0
+
+model.eval() 
+
+with torch.no_grad():  # No need for gradients
+    for images, labels in test_loader:
+        outputs = model(images)  # Forward pass
+        predictions = torch.argmax(outputs, dim=1)  # Get highest logit (most likely class)
+        correct += (predictions == labels).sum().item()  # Count correct predictions
+        total += labels.size(0)  # Track total samples
+
+accuracy = correct / total * 100  # Convert to percentage
+print(f"Test Accuracy: {accuracy:.2f}%")
+
+
+### test accuracy  at 98.09% at 30 epochs with is probably overfit, but I wanted a proper period to leave it running for
 
