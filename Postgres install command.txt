@@ -1,0 +1,4 @@
+#Postgres install command
+
+
+docker run --name mnist_postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=helterskelt34 -e POSTGRES_DB=mnist_logs -p 5432:5432 -d postgres

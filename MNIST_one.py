@@ -114,3 +114,5 @@ print(f"Test Accuracy: {accuracy:.2f}%")
 
 ### test accuracy  at 98.09% at 30 epochs with is probably overfit, but I wanted a proper period to leave it running for
 
+torch.save(model.state_dict(), "mnist_model_one_weights.pth")
+torch.save(model, "mnist_full_model.pth")
